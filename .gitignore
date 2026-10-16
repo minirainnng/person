@@ -1,0 +1,67 @@
+# ===== 通用 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+*.swp
+.vscode/
+.idea/
+*.iml
+HELP.md
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+
+# ===== 依赖目录 =====
+**/node_modules/
+**/target/
+**/build/
+**/dist/
+**/.nuxt/
+**/.next/
+**/.cache/
+**/.parcel-cache/
+**/.vite/
+
+# ===== Spring Boot 配置 =====
+**/application-local.yml
+**/application-local.properties
+**/application-dev.yml
+**/application-dev.properties
+**/application-prod.yml
+**/application-prod.properties
+*.jks
+*.pem
+*.key
+*.p12
+
+# ===== 数据库与上传 =====
+**/uploads/
+**/static/upload/
+**/static/files/
+
+# ===== 环境变量（真实值不入库） =====
+**/.env
+**/.env.local
+**/.env.*.local
+# 保留模板
+!**/.env.example
+!**/.env.production.example
+
+# ===== 日志与 IDE =====
+**/logs/
+**/*.log
+.history/
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# ===== 测试 / 覆盖率 =====
+**/coverage/
+**/.nyc_output/
+
+# ===== 部署产物 =====
+**/*.jar
+!**/spring-boot-starter-*.jar
+**/war/

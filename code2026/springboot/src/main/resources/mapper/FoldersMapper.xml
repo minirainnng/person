@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FoldersMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Folders">
+        SELECT folders.*
+        FROM folders
+        <where>
+            <if test="parentId != null">AND folders.parent_id = #{parentId}</if>
+            <if test="name != null and name != ''">AND folders.name LIKE CONCAT('%', #{name}, '%')</if>
+            <if test="sortOrder != null">AND folders.sort_order = #{sortOrder}</if>
+            <if test="createdAt != null">AND folders.created_at = #{createdAt}</if>
+            <if test="updatedAt != null">AND folders.updated_at = #{updatedAt}</if>
+        </where>
+        ORDER BY folders.sort_order ASC, folders.id ASC
+    </select>
+    <select id="selectById" resultType="com.example.entity.Folders">
+        select * from `folders` where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from `folders` where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Folders" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO `folders` (parent_id, name, sort_order, created_at, updated_at)
+        VALUES (#{parentId}, #{name}, COALESCE(#{sortOrder}, 0), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+    <update id="updateById" parameterType="com.example.entity.Folders">
+        update `folders`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

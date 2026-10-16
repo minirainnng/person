@@ -1,0 +1,23 @@
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; color: #25324a; font-size: 14px; background: #f4f6fb; }
+a { color: #4f7fe8; text-decoration: none; }
+th { color: #25324a !important; }
+.card, .page-card { background: #fff; border: 1px solid #e6ebf3; border-radius: 14px; padding: 20px; box-shadow: 0 5px 20px rgba(37,57,95,.045); }
+.front-container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 28px 0; min-height: 100vh; }
+.myEff { max-width: 500px; }
+.line1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.line2 { word-break: break-all; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+:root { --vault-primary: #4f7fe8; --vault-ink: #25324a; --vault-muted: #8793a7; --vault-border: #e6ebf3; --vault-page: #f4f6fb; --el-color-primary: #4f7fe8; --el-color-primary-dark-2: #3566ce; }
+.el-form-item__label { color: #53627a; font-weight: 600; }
+.el-input__wrapper, .el-select__wrapper, .el-textarea__inner { border-radius: 9px !important; box-shadow: 0 0 0 1px #dfe5ef inset !important; }
+.el-button { border-radius: 9px; font-weight: 600; }
+.el-button--primary { box-shadow: 0 3px 8px rgba(79,127,232,.16); }
+.el-dialog { border-radius: 14px !important; overflow: hidden; }
+.el-dialog__header { border-bottom: 1px solid #edf0f5; margin-right: 0; }
+.el-table { --el-table-header-bg-color: #f7f9fc; --el-table-row-hover-bg-color: #f4f7ff; color: #25324a; }
+.el-table th.el-table__cell { color: #64728a; font-weight: 700; }
+.login-container { background: radial-gradient(circle at 15% 15%, #dfeaff 0, transparent 32%), radial-gradient(circle at 88% 85%, #e8e5ff 0, transparent 30%), #f3f6fc !important; }
+.login-box { width: min(410px, calc(100vw - 36px)) !important; padding: 42px 36px !important; border: 1px solid #e1e7f1; border-radius: 18px !important; box-shadow: 0 20px 60px rgba(49,74,124,.12) !important; background: rgba(255,255,255,.96) !important; }
+.avatar-uploader .el-upload { border-radius: 12px !important; border-color: #cbd7ed !important; }
+.avatar-uploader .el-upload:hover { border-color: #4f7fe8 !important; }
+@media (max-width: 700px) { .front-container { width: calc(100% - 24px); padding: 16px 0; } .login-box { padding: 32px 24px !important; } }

@@ -1,0 +1,38 @@
+# ===== Spring Boot 生产环境配置模板 =====
+# 真实部署时请在部署平台(Railway/Render/...)的环境变量里填入实际值
+# 本文件仅作为参考，部署到云端时各平台会用自己的环境变量机制
+
+server:
+  port: 9090
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    # 生产环境不要打印 SQL
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+ai:
+  deepseek:
+    enabled: ${DEEPSEEK_ENABLED:false}
+    api-key: ${DEEPSEEK_API_KEY:}
+    model: ${DEEPSEEK_MODEL:deepseek-chat}
+
+    fileBaseUrl: ${FILE_BASE_URL:}
+
+logging:
+  level:
+    root: INFO
+    com.example: INFO

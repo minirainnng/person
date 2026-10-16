@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MemoriesMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Memories">
+        SELECT memories.*
+        FROM
+        memories
+        <where>
+            <if test="title != null and title != ''">AND memories.title LIKE CONCAT('%', #{title}, '%')</if>
+            <if test="sourceTitle != null and sourceTitle != ''">AND memories.source_title LIKE CONCAT('%', #{sourceTitle}, '%')</if>
+            <if test="sourceType != null and sourceType != ''">AND memories.source_type LIKE CONCAT('%', #{sourceType}, '%')</if>
+            <if test="originalUrl != null and originalUrl != ''">AND memories.original_url LIKE CONCAT('%', #{originalUrl}, '%')</if>
+            <if test="originalText != null and originalText != ''">AND memories.original_text LIKE CONCAT('%', #{originalText}, '%')</if>
+            <if test="imagePath != null and imagePath != ''">AND memories.image_path LIKE CONCAT('%', #{imagePath}, '%')</if>
+            <if test="note != null">AND memories.note = #{note}</if>
+            <if test="createdAt != null">AND memories.created_at = #{createdAt}</if>
+            <if test="updatedAt != null">AND memories.updated_at = #{updatedAt}</if>
+        </where>
+        ORDER BY memories.id DESC
+    </select>
+    <select id="selectByFolderId" resultType="com.example.entity.Memories">
+        WITH RECURSIVE folder_tree AS (
+            SELECT id FROM folders WHERE id = #{folderId}
+            UNION ALL
+            SELECT f.id FROM folders f INNER JOIN folder_tree ft ON f.parent_id = ft.id
+        )
+        SELECT DISTINCT m.*
+        FROM memories m
+        INNER JOIN memory_folders mf ON mf.memory_id = m.id
+        INNER JOIN folder_tree ft ON ft.id = mf.folder_id
+        ORDER BY m.id DESC
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Memories">
+        select * from `memories` where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from `memories` where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Memories" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into `memories`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="sourceTitle != null">source_title,</if>
+            <if test="sourceType != null">source_type,</if>
+            <if test="originalUrl != null">original_url,</if>
+            <if test="originalText != null">original_text,</if>
+            <if test="imagePath != null">image_path,</if>
+            <if test="note != null">note,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="sourceTitle != null">#{sourceTitle},</if>
+            <if test="sourceType != null">#{sourceType},</if>
+            <if test="originalUrl != null">#{originalUrl},</if>
+            <if test="originalText != null">#{originalText},</if>
+            <if test="imagePath != null">#{imagePath},</if>
+            <if test="note != null">#{note},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+        </trim>
+    </insert>
+    <update id="updateById" parameterType="com.example.entity.Memories">
+        update `memories`
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="sourceTitle != null">
+                source_title = #{sourceTitle},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType},
+            </if>
+            <if test="originalUrl != null">
+                original_url = #{originalUrl},
+            </if>
+            <if test="originalText != null">
+                original_text = #{originalText},
+            </if>
+            <if test="imagePath != null">
+                image_path = #{imagePath},
+            </if>
+            <if test="note != null">
+                note = #{note},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

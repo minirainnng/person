@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SopMemoryRefMapper">
+
+    <select id="findBySopAndMemory" resultType="com.example.entity.SopMemoryRef">
+        select * from `sop_memory_refs`
+        where sop_id = #{sopId} and memory_id = #{memoryId}
+        limit 1
+    </select>
+
+    <select id="listBySopId" resultType="com.example.entity.SopMemoryRefView">
+        select
+            r.id            as id,
+            r.sop_id        as sopId,
+            r.memory_id     as memoryId,
+            r.memory_title_snapshot as memoryTitleSnapshot,
+            r.created_at    as createdAt,
+            (m.id is not null) as memoryAlive,
+            coalesce(m.title, r.memory_title_snapshot) as memoryTitle
+        from `sop_memory_refs` r
+        left join `memories` m on m.id = r.memory_id
+        where r.sop_id = #{sopId}
+        order by r.id asc
+    </select>
+
+    <insert id="upsert" parameterType="com.example.entity.SopMemoryRef">
+        insert into `sop_memory_refs`(sop_id, memory_id, memory_title_snapshot)
+        values(#{sopId}, #{memoryId}, #{memoryTitleSnapshot})
+        on duplicate key update memory_title_snapshot = values(memory_title_snapshot)
+    </insert>
+
+    <delete id="deleteById">
+        delete from `sop_memory_refs` where id = #{id}
+    </delete>
+
+    <delete id="deleteBySopId">
+        delete from `sop_memory_refs` where sop_id = #{sopId}
+    </delete>
+</mapper>

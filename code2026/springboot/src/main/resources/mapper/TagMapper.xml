@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TagMapper">
+    <select id="selectAll" resultType="com.example.entity.Tag">
+        SELECT DISTINCT t.id, t.name
+        FROM tags t
+        INNER JOIN memory_tags mt ON mt.tag_id = t.id
+        ORDER BY t.name ASC
+    </select>
+    <select id="selectById" resultType="com.example.entity.Tag">
+        SELECT id, name FROM tags WHERE id = #{id}
+    </select>
+    <select id="selectByName" resultType="com.example.entity.Tag">
+        SELECT id, name FROM tags WHERE name = #{name}
+    </select>
+    <insert id="insert" parameterType="com.example.entity.Tag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tags (name) VALUES (#{name})
+    </insert>
+    <update id="rename">
+        UPDATE tags SET name = #{name} WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM tags WHERE id = #{id}
+    </delete>
+    <select id="selectByMemoryId" resultType="com.example.entity.Tag">
+        SELECT t.id, t.name FROM tags t
+        JOIN memory_tags mt ON mt.tag_id = t.id
+        WHERE mt.memory_id = #{memoryId} ORDER BY t.name ASC
+    </select>
+    <select id="selectByMemoryIds" resultType="com.example.entity.Tag">
+        SELECT DISTINCT t.id, t.name FROM tags t
+        JOIN memory_tags mt ON mt.tag_id = t.id
+        WHERE mt.memory_id IN
+        <foreach collection="memoryIds" item="id" open="(" separator="," close=")">#{id}</foreach>
+        ORDER BY t.name ASC
+    </select>
+    <delete id="deleteByMemoryId">
+        DELETE FROM memory_tags WHERE memory_id = #{memoryId}
+    </delete>
+    <insert id="insertMemoryTag">
+        INSERT INTO memory_tags (memory_id, tag_id) VALUES (#{memoryId}, #{tagId})
+    </insert>
+    <select id="searchMemoryIds" resultType="java.lang.Long">
+        <bind name="tagCount" value="tagIds.size()" />
+        SELECT memory_id FROM memory_tags
+        WHERE tag_id IN
+        <foreach collection="tagIds" item="id" open="(" separator="," close=")">#{id}</foreach>
+        GROUP BY memory_id
+        <if test="matchAll">HAVING COUNT(DISTINCT tag_id) = #{tagCount}</if>
+    </select>
+</mapper>
