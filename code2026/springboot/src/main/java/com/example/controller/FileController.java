@@ -26,7 +26,7 @@ public class FileController {
     // 表示本地磁盘文件的存储路径
     private static final String filePath = System.getProperty("user.dir") + "/files/";
 
-    @Value("${fileBaseUrl}")
+    @Value("${ai.deepseek.fileBaseUrl:http://localhost}")
     private String fileBaseUrl;
 
     @Value("${server.port}")
